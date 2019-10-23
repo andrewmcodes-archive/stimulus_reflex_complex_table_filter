@@ -1,0 +1,26 @@
+<h1 class="mt-8 text-4xl text-gray-800 font-bold">Restaurants</h1>
+<h2 class="mb-8 text-gray-800">Currently filtering by: <%= session[:filter].capitalize %></h2>
+
+<table class="table-auto bg-white w-full" data-controller="restaurants">
+  <thead>
+    <tr class="text-left bg-gray-800 text-white">
+      <% Restaurant::FILTERS.each do |filter| %>
+      <th class="px-4 py-2">
+        <%= link_to filter.capitalize, "#", class: filter_css(filter), data: { reflex: "click->RestaurantsReflex#filter", filter: filter } %>
+        <%= arrow(filter, session[:filter], session[:filter_order]) %>
+      </th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody class="text-gray-900">
+    <% @filtered_restaurants.each do |restaurant| %>
+      <tr>
+        <td class="border px-4 py-2"><%= restaurant.name %></td>
+        <td class="border px-4 py-2"><%= stars_to_symbol(restaurant.stars) %></td>
+        <td class="border px-4 py-2"><%= price_to_dollar_signs(restaurant.price) %></td>
+        <td class="border px-4 py-2"><%= restaurant.category %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
